@@ -1,0 +1,73 @@
+
+<h2>Оформите заказ</h2>
+
+
+<form action="/order" method="POST" role="form">
+
+  <div class="form-group">
+    <label>Ваше имя</label>
+    <input name="orders[name]" type="text" class="form-control" placeholder="Ваше имя" value="<%= @c.name %>">
+  </div>
+
+  <div class="form-group">
+    <label>Ваш телефон</label>
+    <input name="orders[phone]" type="text" class="form-control" placeholder="Ваш телефон" value="<%= @c.phone %>">
+  </div>
+
+  <div class="form-group">
+    <label>Ваш адрес</label>
+    <input name="orders[adress]" type="text" class="form-control" placeholder="Введите адрес доставки" value="<%= @c.adress %>">
+  </div>
+  
+  <input name="orders[pizza]" type="hidden" value="<%= @c.pizza %>">
+ 
+
+
+<label>Ваш заказ:</label>
+<hr>
+<div class="row">
+
+<% p = @c.pizza.split(',') %>
+<% final_price = 0 %>
+<% p.each do |i| %>
+	<% s = i.split('=') %>
+	<% ordered_pizza = @products.find(s[0].sub("product_", '')) %>
+	<div class="col-md-3">
+		<div>
+			<%= ordered_pizza.title %>
+		</div>
+
+		<div>
+			<img src="<%= ordered_pizza.path_to_image %>" />
+		</div>
+
+		<div>
+			Размер: <%= ordered_pizza.size %> см
+		</div>
+
+		<div>
+		<% final_price += ordered_pizza.price.to_i*s[1].to_i %>
+			Цена: <%= ordered_pizza.price %> руб.
+		</div>
+
+		<div>
+			Количество: <%= s[1] %> шт.
+		</div>
+	</div>
+
+<% end %>	
+
+</div>
+<BR>
+<hr>
+ <p><label>Итого:</label>  <%= final_price %> рублей.
+<hr><br>
+<p><button type="submit" class="btn btn-primary">Заказать</button>
+
+</form>
+
+
+
+
+
+
